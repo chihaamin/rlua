@@ -27,7 +27,7 @@ cargo build --release
 ### Running
 
 ```bash
-cargo run -- path/to/your/script.lua
+cargo run -- path/to/your/script.rlua
 ```
 
 ## Contributing
