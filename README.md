@@ -20,7 +20,7 @@ This project is a recreation of the Lua programming language, implemented in Rus
 
 ```bash
 git clone https://github.com/chihaamin/rlua.git
-cd interpeter
+cd rlua
 cargo build --release
 ```
 
