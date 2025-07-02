@@ -2,28 +2,28 @@
 
 
 -- int value
-local int a = 10;
+int a = 10;
 
 -- long value
-local long b = 100;
+long b = 100;
 
 -- float value
-local float c = 1.2;
+float c = 1.2;
 
 -- double value
-local double d = 3.14;
+double d = 3.14;
 
 -- string value
-local string e = "this is a test";
+string e = "this is a test";
 
 -- char value
-local char f = 'f';
+char f = 'f';
 
 -- boolean value
-local bool k = true;
+bool k = true;
 
 -- table value
-local table j = {
+table j = {
 
     -- table[0] value
         int t1 = 1,
@@ -37,7 +37,7 @@ local table j = {
 };
 
 -- vec value
-local vec x = [1,2,3];
+vec x = [1,2,3];
 
 -- void function
 void function test()
@@ -49,12 +49,12 @@ end
 
 -- int function
 int function test3() 
-return (int)12
+    return (int)12
 end
 
 -- long function
 long function test4()
-local long a = 111
+    long a = 111
 return a
 end
 
@@ -66,4 +66,6 @@ end
 void ()
 end
 
-
+for k,v in pairs(j) do 
+    print(k,v)
+end
