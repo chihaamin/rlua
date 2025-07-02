@@ -19,7 +19,7 @@ This project is a recreation of the Lua programming language, implemented in Rus
 ### Building
 
 ```bash
-git clone https://github.com/yourusername/interpeter.git
+git clone https://github.com/chihaamin/rlua.git
 cd interpeter
 cargo build --release
 ```
