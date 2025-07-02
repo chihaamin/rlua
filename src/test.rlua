@@ -1,0 +1,42 @@
+local int a = 10;
+
+local long b = 100;
+
+local float c = 1.2;
+
+local double d = 3.14;
+
+local string e = "this is a test";
+
+local char f = 'f';
+
+local bool k = true;
+
+local table j = {
+
+    int t1 = 1,
+
+    float t2 = 1.1,
+
+    vec t3 = [1,2,3]
+};
+
+local vec x = [1,2,3];
+
+void function test()
+
+end
+
+global void test1 = function() 
+
+end
+
+int function test3() 
+
+return (int) 12
+end
+
+long function test4()
+local long a = 111
+return a
+end
