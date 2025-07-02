@@ -1,5 +1,9 @@
+use std::io::{BufRead, Write};
 use std::process::exit;
 use std::{env, fs, io};
+
+mod scanner;
+use crate::scanner::*;
 
 fn run_file(file_path: &str) -> Result<(), io::Error> {
     match fs::read_to_string(file_path) {
@@ -8,16 +12,32 @@ fn run_file(file_path: &str) -> Result<(), io::Error> {
     }
 }
 fn run_prompt() -> Result<(), io::Error> {
-    print!("> ");
-    let mut buffer = String::new();
-    let stdin = io::stdin();
-    stdin.read_line(&mut buffer)?;
-    println!("You wrote: {}", buffer);
-    Ok(())
+    loop {
+        print!("> ");
+        io::stdout().flush()?;
+        let mut buffer = String::new();
+        let stdin = io::stdin();
+        let mut handle = stdin.lock();
+        match handle.read_line(&mut buffer) {
+            Ok(n) => {
+                if n <= 1 {
+                    return Ok(());
+                }
+            }
+            Err(msg) => return Err(io::Error::new(io::ErrorKind::Other, msg)),
+        }
+        println!("You wrote: {}", buffer);
+    }
 }
 
-fn run(_contents: &str) -> Result<(), io::Error> {
-    Err(io::Error::new(io::ErrorKind::Other, "Not Implemeted"))
+fn run(contents: &str) -> Result<(), io::Error> {
+    let scanner = Scanner::new(contents);
+    let tokens = scanner.scan_tokens()?;
+
+    for token in tokens {
+        println!("{:?}", token);
+    }
+    Ok(())
 }
 
 fn main() {
