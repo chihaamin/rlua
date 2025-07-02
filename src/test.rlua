@@ -1,42 +1,69 @@
+-- variables and function are local by default
+
+
+-- int value
 local int a = 10;
 
+-- long value
 local long b = 100;
 
+-- float value
 local float c = 1.2;
 
+-- double value
 local double d = 3.14;
 
+-- string value
 local string e = "this is a test";
 
+-- char value
 local char f = 'f';
 
+-- boolean value
 local bool k = true;
 
+-- table value
 local table j = {
 
-    int t1 = 1,
+    -- table[0] value
+        int t1 = 1,
 
-    float t2 = 1.1,
+    -- table[1] value
+        float t2 = 1.1,
 
-    vec t3 = [1,2,3]
+    -- table[2] value
+        vec t3 = [1,2,3]
+
 };
 
+-- vec value
 local vec x = [1,2,3];
 
+-- void function
 void function test()
-
 end
 
+-- void function
 global void test1 = function() 
-
 end
 
+-- int function
 int function test3() 
-
-return (int) 12
+return (int)12
 end
 
+-- long function
 long function test4()
 local long a = 111
 return a
 end
+
+-- anonymous void function
+void function() 
+end
+
+-- void fastcall function
+void ()
+end
+
+
