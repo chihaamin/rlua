@@ -2,8 +2,8 @@ use std::io::{BufRead, Write};
 use std::process::exit;
 use std::{env, fs, io};
 
-mod scanner;
-use crate::scanner::*;
+mod lexer;
+use crate::lexer::*;
 
 fn run_file(file_path: &str) -> Result<(), io::Error> {
     match fs::read_to_string(file_path) {
@@ -20,19 +20,24 @@ fn run_prompt() -> Result<(), io::Error> {
         let mut handle = stdin.lock();
         match handle.read_line(&mut buffer) {
             Ok(n) => {
-                if n <= 1 {
+                dbg!(n);
+                if n <= 2 {
                     return Ok(());
                 }
             }
             Err(msg) => return Err(io::Error::new(io::ErrorKind::Other, msg)),
         }
-        println!("You wrote: {}", buffer);
+        println!("> {}", buffer);
+        match run(&buffer) {
+            Ok(_) => (),
+            Err(msg) => return Err(io::Error::new(io::ErrorKind::Other, msg)),
+        }
     }
 }
 
 fn run(contents: &str) -> Result<(), io::Error> {
-    let scanner = Scanner::new(contents);
-    let tokens = scanner.scan_tokens()?;
+    let mut scanner = Lexer::new(contents);
+    let tokens = scanner.tokenize();
 
     for token in tokens {
         println!("{:?}", token);
