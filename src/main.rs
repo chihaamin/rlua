@@ -4,6 +4,7 @@ use std::{env, fs, io};
 
 mod lexer;
 use crate::lexer::*;
+mod test;
 
 fn run_file(file_path: &str) -> Result<(), io::Error> {
     match fs::read_to_string(file_path) {
