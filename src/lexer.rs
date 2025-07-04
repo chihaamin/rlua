@@ -113,6 +113,16 @@ impl<'a> Lexer<'a> {
             // Single-character tokens
             '+' => Some(Token::Plus),
             '-' => {
+                // Check if this is a negative number
+                if let Some(&next_char) = self.input.peek() {
+                    if next_char.is_ascii_digit() {
+                        // Process as negative number
+                        let next_char = self.input.next().unwrap();
+                        return self.read_number(next_char, true);
+                    }
+                }
+
+                // Otherwise handle as normal minus or comment
                 if self.match_char('-') {
                     self.read_comment()
                 } else {
@@ -184,7 +194,7 @@ impl<'a> Lexer<'a> {
             c if c.is_alphabetic() || c == '_' => self.read_identifier(c),
 
             // Numbers
-            c if c.is_ascii_digit() => self.read_number(c),
+            c if c.is_ascii_digit() => self.read_number(c, false),
 
             _ => None,
         }
@@ -325,8 +335,13 @@ impl<'a> Lexer<'a> {
         }
     }
 
-    fn read_number(&mut self, first: char) -> Option<Token> {
-        let mut num_str = String::from(first);
+    fn read_number(&mut self, first: char, is_negative: bool) -> Option<Token> {
+        let mut num_str = if is_negative {
+            format!("-{}", first)
+        } else {
+            String::from(first)
+        };
+
         let mut has_dot = false;
         let mut has_exp = false;
 

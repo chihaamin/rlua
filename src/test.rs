@@ -27,7 +27,19 @@ fn handle_int_value_decleration() {
     assert_eq!(tokens[4], Token::Semicolon);
     assert_eq!(tokens[5], Token::Eof);
 }
-
+#[test]
+fn handle_neg_int_value_decleration() {
+    let source = "int a = -10;";
+    let mut scanner = Lexer::new(source);
+    let tokens = scanner.tokenize();
+    assert_eq!(tokens.len(), 6);
+    assert_eq!(tokens[0], Token::Int);
+    assert_eq!(tokens[1], Token::Ident("a".to_string()));
+    assert_eq!(tokens[2], Token::Assign);
+    assert_eq!(tokens[3], Token::NumberLiteral(-10.0));
+    assert_eq!(tokens[4], Token::Semicolon);
+    assert_eq!(tokens[5], Token::Eof);
+}
 #[test]
 fn handle_long_value_decleration() {
     let source = "long b = 100;";
@@ -55,7 +67,19 @@ fn handle_float_value_decleration() {
     assert_eq!(tokens[4], Token::Semicolon);
     assert_eq!(tokens[5], Token::Eof);
 }
-
+#[test]
+fn handle_neg_float_value_decleration() {
+    let source = "float c = -1.2;";
+    let mut scanner = Lexer::new(source);
+    let tokens = scanner.tokenize();
+    assert_eq!(tokens.len(), 6);
+    assert_eq!(tokens[0], Token::Float);
+    assert_eq!(tokens[1], Token::Ident("c".to_string()));
+    assert_eq!(tokens[2], Token::Assign);
+    assert_eq!(tokens[3], Token::NumberLiteral(-1.2));
+    assert_eq!(tokens[4], Token::Semicolon);
+    assert_eq!(tokens[5], Token::Eof);
+}
 #[test]
 fn handle_double_value_decleration() {
     let source = "double d = 3.14;";
@@ -120,7 +144,7 @@ fn handle_table_value_decleration() {
     let source = r#"
         table j = {
             int t1 = 1,
-            float t2 = 1.1,
+            float t2 = -1.1,
             vec t3 = [1,2,3]
         };
     "#;
@@ -144,7 +168,7 @@ fn handle_table_value_decleration() {
     assert_eq!(tokens[9], Token::Float);
     assert_eq!(tokens[10], Token::Ident("t2".to_string()));
     assert_eq!(tokens[11], Token::Assign);
-    assert_eq!(tokens[12], Token::NumberLiteral(1.1));
+    assert_eq!(tokens[12], Token::NumberLiteral(-1.1));
     assert_eq!(tokens[13], Token::Comma);
 
     // Third field
