@@ -120,6 +120,26 @@ impl<'a> Lexer<'a> {
                         let next_char = self.input.next().unwrap();
                         return self.read_number(next_char, true);
                     }
+                    if next_char == '.' {
+                        /*
+
+                        creating tmp clone of the input for multipeek
+                        if its a digit we advance the original input and drop the clone
+                        otherwise we just drop the tmp_input for fast free allocation
+
+                        */
+                        let mut tmp_input = self.input.clone();
+                        tmp_input.next()?;
+
+                        if let Some(&next_next_char) = tmp_input.peek() {
+                            if next_next_char.is_ascii_digit() {
+                                self.input.next()?;
+                                drop(tmp_input);
+                                return self.read_number(next_char, true);
+                            }
+                        }
+                        drop(tmp_input);
+                    }
                 }
 
                 // Otherwise handle as normal minus or comment
@@ -143,6 +163,11 @@ impl<'a> Lexer<'a> {
             ';' => Some(Token::Semicolon),
             ',' => Some(Token::Comma),
             '.' => {
+                if let Some(&next_char) = self.input.peek() {
+                    if next_char.is_ascii_digit() {
+                        return self.read_number(c, false);
+                    }
+                }
                 if self.match_char('.') {
                     if self.match_char('.') {
                         Some(Token::Ellipsis)
@@ -336,11 +361,7 @@ impl<'a> Lexer<'a> {
     }
 
     fn read_number(&mut self, first: char, is_negative: bool) -> Option<Token> {
-        let mut num_str = if is_negative {
-            format!("-{}", first)
-        } else {
-            String::from(first)
-        };
+        let mut num_str = String::from(first);
 
         let mut has_dot = false;
         let mut has_exp = false;
@@ -374,8 +395,13 @@ impl<'a> Lexer<'a> {
                 _ => break,
             }
         }
-
-        num_str.parse::<f64>().map(Token::NumberLiteral).ok()
+        if is_negative {
+            num_str = format!("-{}", num_str);
+            dbg!(&num_str);
+            num_str.parse::<f64>().map(Token::NumberLiteral).ok()
+        } else {
+            num_str.parse::<f64>().map(Token::NumberLiteral).ok()
+        }
     }
 
     fn skip_whitespace(&mut self) {

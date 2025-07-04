@@ -15,6 +15,19 @@ fn handle_one_char_token() {
 }
 
 #[test]
+fn handle_floats_token() {
+    let source = ".32 -23.44 .0 -.3";
+    let mut scanner = Lexer::new(source);
+    let tokens = scanner.tokenize();
+    assert_eq!(tokens.len(), 5);
+    assert_eq!(tokens[0], Token::NumberLiteral(0.32));
+    assert_eq!(tokens[1], Token::NumberLiteral(-23.44));
+    assert_eq!(tokens[2], Token::NumberLiteral(0.0));
+    assert_eq!(tokens[3], Token::NumberLiteral(-0.3));
+    assert_eq!(tokens[4], Token::Eof);
+}
+
+#[test]
 fn handle_int_value_decleration() {
     let source = "int a = 10;";
     let mut scanner = Lexer::new(source);
